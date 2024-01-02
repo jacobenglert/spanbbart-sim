@@ -20,4 +20,4 @@ runindex=$SLURM_ARRAY_TASK_ID
 
 module load R/4.2.2
 
-Rscript spanbbart-sim-production.R $runindex
+Rscript R/spanbbart-sim-production.R $runindex
