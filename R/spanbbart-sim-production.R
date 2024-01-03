@@ -24,7 +24,8 @@ for(i in 1:ncol(params)){
 # Import Reference Data ---------------------------------------------------
 
 # ATL Zip Code Shapefile (with Population)
-data <- read_rds(here::here('Misc','GAZIP05.rds'))
+data <- read_rds(here::here('Misc','GAZIP05.rds')) |>
+  sf::st_as_sf()
 
 # Observed ATL 05-07 predictor correlations
 data_cor <- read_rds(here::here('Misc','obs_cor.rds'))
@@ -38,7 +39,7 @@ nS  <- nrow(data)     # Number of locations
 n   <- nT*nS          # Total number of observations
 
 pop <- rep(data$POPULATION, times = nT) # Repeat population vector
-geo <- rep(data$geometry, times = nT)   # Repeat geometry vector
+geo <- rep(sf::st_geometry(data), times = nT)   # Repeat geometry vector
 offset <- log(pop)                      # Create offset
 
 # Confounders
