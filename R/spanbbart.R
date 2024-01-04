@@ -36,7 +36,7 @@ spanbbart <- function(x1, x2, y,
   D <- diag(rowSums(W))
   
   # Fit a non-spatial fixed effects NB model to get initial estimates
-  init.fit <- MASS::glm.nb(y ~ 1 + as.matrix(x1) + as.matrix(x2) + offset(offset))
+  init.fit <- MASS::glm.nb(y ~ 1 + as.matrix(x1) + offset(offset))
   
   # Initialize parameters
   beta  <- coef(init.fit)[2:(ncol(x1) + 1)]
@@ -44,7 +44,7 @@ spanbbart <- function(x1, x2, y,
   tau2  <- 1
   rho   <- 0.5
   xi    <- init.fit$theta
-  G     <- as.numeric(x2 %*% coef(init.fit)[(ncol(x1) + 2):(ncol(x1) + 1 + ncol(x2))]) + coef(init.fit)[1]
+  G     <- coef(init.fit)[1]#as.numeric(x2 %*% coef(init.fit)[(ncol(x1) + 2):(ncol(x1) + 1 + ncol(x2))]) + coef(init.fit)[1]
   
   # Linear predictor
   fixeff <- as.numeric(x1 %*% beta)
