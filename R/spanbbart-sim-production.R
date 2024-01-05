@@ -56,13 +56,13 @@ nx2b <- 5
 x2cov <- rbind(cbind(data_cor, matrix(0, nx2b, nx2b)),
                cbind(matrix(0, nx2a, nx2a), diag(nx2b)))
 
-# set.seed(1) # Use the same seed to ensure exposure quantiles do not change
+set.seed(1) # Use the same seed to ensure exposure quantiles do not change
 x2 <- mvtnorm::rmvnorm(n, sigma = x2cov)
-# x2 <- apply(x2, 2, \(x) (x - min(x)) / (max(x) - min(x))) + 1e-4
+x2 <- apply(x2, 2, \(x) (x - min(x)) / (max(x) - min(x))) + 1e-4
 colnames(x2) <- paste0('X2_', 1:nx2)
 
 # Fixed parameters
-# set.seed(index) # reset seed
+set.seed(index) # reset seed
 alpha <- -10    # fixed intercept
 beta  <- matrix(c(-2, -1, 1, 2), ncol = 1) # fixed effects
 
@@ -78,7 +78,7 @@ x_nu  <- kronecker(matrix(1, nrow = nT, ncol = 1), diag(nS)) # design matrix
 
 # BART component (Friedman 2001)
 f <- function(x){
-  (10*sin(pi*x[,1]*x[,2]) + 20*(x[,3] - .5)^2 + 10*x[,4] + 5*x[,5]) / 50
+  (10*sin(pi*x[,1]*x[,2]) + 20*(x[,3] - .5)^2 + 10*x[,4] + 5*x[,5]) / 5
 }
 
 # Linear predictor
