@@ -208,7 +208,7 @@ ale1df <- mapply(\(x, n){
   bind_rows()
 
 ale1df <- ale1df |>
-  filter(x != min(x) & x != max(x), .by = var)
+  filter(!(x %in% c(min(x), max(x))), .by = var)
 
 # Plot first-order ALEs
 ale1df |>
@@ -268,8 +268,7 @@ ale2df <- mapply(\(x, idx, fg1, fg2){
   bind_rows()
 
 ale2df <- ale2df |>
-  filter(x1 != min(x1) & x1 != max(x1) & x2 != min(x2) & x2 != max(x2), .by = c(var1, var2)) |>
-  filter(x1 != min(x1) & x1 != max(x1) & x2 != min(x2) & x2 != max(x2), .by = c(var1, var2))
+  filter(!(x1 %in% c(min(x1), max(x1)) | x2 %in% c(min(x2), max(x2))), .by = c(var1, var2))
 
 
 # Estimate (without Main Effects)
