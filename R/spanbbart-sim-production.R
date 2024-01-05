@@ -107,7 +107,7 @@ fit <- spanbbart(x1 = x1, x2 = x2, y = y, s = s, t = t,
 # Compute ALE -------------------------------------------------------------
 
 # Custom BART prediction function (returns entire posterior distribution)
-pred_fun <- function(model, newdata) model$predict(newdata)
+pred_fun <- function(model, newdata) model$predict(newdata)[,c(T,rep(F, num_thin - 1))]
 
 # Compute first-order ALE for each predictor
 K <- K
