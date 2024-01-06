@@ -61,7 +61,7 @@ spanbbart <- function(x1, x2, y,
   
   # Create dbarts sampler object
   control <- dbartsControl(n.trees = m,
-                           n.burn = num_burn, n.samples = num_iter - num_burn, n.thin = num_thin,
+                           n.burn = 0, n.samples = num_iter - num_burn, n.thin = 1,
                            n.chains = 1L, keepTrees = FALSE, keepTrainingFits = TRUE,
                            updateState = TRUE, verbose = FALSE) #, rngSeed = seed)
   
