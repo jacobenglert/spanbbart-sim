@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=spannbart-combine      # create a name for the job
+#SBATCH --job-name=spanbbart-combine      # create a name for the job
 #SBATCH --nodes=1                         # Node count (number of computers)
 #SBATCH --ntasks-per-node=1               # total number of tasks across all nodes
 #SBATCH --cpus-per-task=1                 # cpu-cores per task (>1 if multi-threaded tasks, internal parallelization within R for example)
