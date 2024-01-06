@@ -10,7 +10,7 @@ library(patchwork)
 
 
 # Load Results ------------------------------------------------------------
-sim_date <- '02JAN2024'
+sim_date <- '05JAN2024'
 results <- read_rds(here::here('Results', paste0(sim_date, '.rds')))
 
 
