@@ -8,8 +8,7 @@
 # Load Packages -----------------------------------------------------------
 library(tidyverse)
 library(patchwork)
-source(here::here('R','spanbbart.R'))
-source(here::here('R','mcmc_ale.R'))
+library(nbbart)
 
 
 # Import Reference Data ---------------------------------------------------

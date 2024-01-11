@@ -7,8 +7,8 @@
 
 # Load Packages -----------------------------------------------------------
 library(tidyverse)
-source(here::here('R','spanbbart.R'))
-source(here::here('R','mcmc_ale.R'))
+library(nbbart)
+library(sf)
 
 
 # Get Parameters ----------------------------------------------------------
