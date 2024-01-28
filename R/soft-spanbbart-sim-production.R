@@ -33,7 +33,7 @@ data_cor <- read_rds(here::here('Misc','obs_cor.rds'))
 # Simulate Data -----------------------------------------------------------
 
 set.seed(index)
-nT  <- 50             # Length of time-series
+nT  <- nT             # Length of time-series
 nS  <- nrow(data)     # Number of locations
 n   <- nT*nS          # Total number of observations
 
