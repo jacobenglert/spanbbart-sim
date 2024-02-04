@@ -57,7 +57,7 @@ x2cov <- rbind(cbind(data_cor, matrix(0, nx2b, nx2b)),
 
 set.seed(1) # Use the same seed to ensure exposure quantiles do not change
 x2 <- mvtnorm::rmvnorm(n, sigma = x2cov)
-x2 <- apply(x2, 2, \(x) (x - min(x)) / (max(x) - min(x))) + 1e-4
+x2 <- apply(x2, 2, \(x) (x - min(x)) / (max(x) - min(x))) #+ 1e-4
 colnames(x2) <- paste0('X2_', 1:nx2)
 
 # Fixed parameters
@@ -171,45 +171,51 @@ ale2df <- mapply(\(x, idx){
 # Compute Simulation Statistics -------------------------------------------
 
 # Implicit intercept
-alpha_true <- alpha + mean(f(x2))
-alpha_bias <- mean(fit$alpha) - alpha_true
+alpha_true <- alpha + mean(f(x2)) + mean(nu) + log(xi)
+alpha_est <- median(fit$logmean)# mean(fit$alpha)
+alpha_bias <- alpha_est - alpha_true
 alpha_lower <- quantile(fit$alpha, 0.025)
 alpha_upper <- quantile(fit$alpha, 0.975)
 alpha_coverage <- as.numeric(alpha_true >= alpha_lower & alpha_true <= alpha_upper)
 
 # Fixed effects
-beta_bias <- colMeans(fit$beta) - beta
+beta_est <- apply(fit$beta, 2, \(x) quantile(x, 0.500)) #colMeans(fit$beta)
+beta_bias <- beta_est - beta
 beta_lower <- apply(fit$beta, 2, \(x) quantile(x, 0.025))
 beta_upper <- apply(fit$beta, 2, \(x) quantile(x, 0.975))
 beta_coverage <- as.numeric(beta >= beta_lower & beta <= beta_upper)
 
 # Dispersion parameter
-xi_bias <- mean(fit$xi) - xi
+xi_est <- median(fit$xi)
+xi_bias <- xi_est - xi
 xi_lower <- quantile(fit$xi, 0.025)
 xi_upper <- quantile(fit$xi, 0.975)
 xi_coverage <- as.numeric(xi >= xi_lower & xi <= xi_upper)
 
 # Spatial correlation
-rho_bias <- mean(fit$rho) - rho
+rho_est <- median(fit$rho)
+rho_bias <- rho_est - rho
 rho_lower <- quantile(fit$rho, 0.025)
 rho_upper <- quantile(fit$rho, 0.975)
 rho_coverage <- as.numeric(rho >= rho_lower & rho <= rho_upper)
 
 # Spatial marginal variance
-tau2_bias <- mean(fit$tau2) - tau2
+tau2_est <- median(fit$tau2)
+tau2_bias <- tau2_est - tau2
 tau2_lower <- quantile(fit$tau2, 0.025)
 tau2_upper <- quantile(fit$tau2, 0.975)
 tau2_coverage <- as.numeric(tau2 >= tau2_lower & tau2 <= tau2_upper)
 
 # Spatial random effects
-nu_bias <- mean(colMeans(fit$nu) - nu)
+nu_true <- nu - mean(nu)
+nu_bias <- mean(colMeans(fit$nu) - nu_true)
 nu_lower <- apply(fit$nu, 2, \(x) quantile(x, 0.025))
 nu_upper <- apply(fit$nu, 2, \(x) quantile(x, 0.975))
-nu_coverage <- mean(as.numeric(nu >= nu_lower & nu <= nu_upper))
-nu_rmse <- sqrt(mean((colMeans(fit$nu) - nu)^2))
+nu_coverage <- mean(as.numeric(nu_true >= nu_lower & nu_true <= nu_upper))
+nu_rmse <- sqrt(mean((colMeans(fit$nu) - nu_true)^2))
 
 # BART component
-f_true <- f(x2) + alpha
+f_true <- f(x2) + alpha + mean(nu) + log(xi)
 bart_mean <- rowMeans(pred_fun(fit$bart, x2))
 bart_median <- apply(pred_fun(fit$bart, x2), 1, \(x) quantile(x, 0.500))
 bart_lower <- apply(pred_fun(fit$bart, x2), 1, \(x) quantile(x, 0.025))
@@ -228,6 +234,27 @@ sim_results <- data.frame(param = c('alpha',
                                     'tau2',
                                     'nu',
                                     'G'),
+                          est = c(alpha_est, 
+                                  beta_est, 
+                                  xi_est, 
+                                  rho_est, 
+                                  tau2_est, 
+                                  NA, 
+                                  NA),
+                          lower = c(alpha_lower, 
+                                  beta_lower, 
+                                  xi_lower, 
+                                  rho_lower, 
+                                  tau2_lower, 
+                                  NA, 
+                                  NA),
+                          upper = c(alpha_upper, 
+                                  beta_upper, 
+                                  xi_upper, 
+                                  rho_upper, 
+                                  tau2_upper, 
+                                  NA, 
+                                  NA),
                           bias = c(alpha_bias, 
                                    beta_bias, 
                                    xi_bias, 
