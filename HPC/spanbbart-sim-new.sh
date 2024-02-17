@@ -17,21 +17,21 @@ array_job14=$(sbatch --parsable HPC/spanbbart-sim-new.slurm 14)
 array_job15=$(sbatch --parsable HPC/spanbbart-sim-new.slurm 15)
 array_job16=$(sbatch --parsable HPC/spanbbart-sim-new.slurm 16)
 
-sbatch --depend=afterany:\
-$array_job1:\
-$array_job2:\
-$array_job3:\
-$array_job4:\
-$array_job5:\
-$array_job6:\
-$array_job7:\
-$array_job8:\
-$array_job9:\
-$array_job10:\
-$array_job11:\
-$array_job12:\
-$array_job13:\
-$array_job14:\
-$array_job15:\
-$array_job16 \
-HPC/spanbbart-sim-combine-new.slurm
+#sbatch --depend=afterany:\
+#$array_job1:\
+#$array_job2:\
+#$array_job3:\
+#$array_job4:\
+#$array_job5:\
+#$array_job6:\
+#$array_job7:\
+#$array_job8:\
+#$array_job9:\
+#$array_job10:\
+#$array_job11:\
+#$array_job12:\
+#$array_job13:\
+#$array_job14:\
+#$array_job15:\
+#$array_job16 \
+#HPC/spanbbart-sim-combine-new.slurm
