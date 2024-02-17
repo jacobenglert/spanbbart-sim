@@ -16,9 +16,9 @@ base <- 0.95
 K <- 40
 soft <- c(TRUE, FALSE)
 sparse <- c(TRUE, FALSE)
-num_iter <- 5000
-num_burn <- 2500
-num_thin <- 5
+num_iter <- 10000
+num_burn <- 5000
+num_thin <- 10
 
 params <- crossing(nT, m, k, power, base, K, soft, sparse,
                    num_iter, num_burn, num_thin) |>
